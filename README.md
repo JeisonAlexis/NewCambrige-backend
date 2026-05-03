@@ -10,7 +10,7 @@ Permite administrar el estado académico y administrativo de estudiantes y docen
 
 - Lenguaje: Python 3.12
 - Framework: FastAPI 0.136.1
-- Base de datos: SQLite 3.x
+- Base de datos: postgreSQL 16
 - ORM: SQLAlchemy 2.0.40
 - Migraciones: Alembic 1.15.2
 - Autenticación: python-jose + passlib
@@ -36,7 +36,8 @@ cd paz-salvo-backend
 
 # 2. Crear entorno virtual
 ```bash
-python -m venv venv
+py -3.12 -m venv venv        # Windows
+python3.12 -m venv venv      # Linux/Mac
 ```
 
 # 3. Activar entorno virtual
@@ -90,6 +91,7 @@ paz-salvo-backend/
 │   │   ├── banda/           # Módulo banda
 │   │   ├── uniformes/       # Gestión de uniformes
 │   │   ├── tesoreria/       # Pagos y finanzas
+│   │   ├── secretaria/      # Papeleria y gestion a bajo nivel
 │   │   ├── rectoria/        # Panel administrativo
 │   │   └── paz_y_salvo/     # Lógica principal del sistema
 │   └── shared/              # Utilidades y componentes compartidos
