@@ -20,27 +20,29 @@ Permite administrar el estado académico y administrativo de estudiantes y docen
 ---
 
 ## ✅ Requisitos
-
-python --version
+```bash
+python --version  # 3.12.x
 git --version
+```
+> PostgreSQL debe estar instalado y corriendo antes de continuar.
 
 ---
 
 ## 🚀 Instalación y ejecución
 
-# 1. Clonar repositorio
+## 1. Clonar repositorio
 ```bash
 git clone https://github.com/Software262/NewCambrige-backend.git
-cd paz-salvo-backend
+cd NewCambrige-backend
 ```
 
-# 2. Crear entorno virtual
+## 2. Crear entorno virtual
 ```bash
 py -3.12 -m venv venv        # Windows
 python3.12 -m venv venv      # Linux/Mac
 ```
 
-# 3. Activar entorno virtual
+## 3. Activar entorno virtual
 
 ```bash
 # Windows
@@ -50,20 +52,32 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-# 4. Instalar dependencias
+## 4. Instalar dependencias
 ```bash
 pip install -r requirements.txt
 ```
 
-# 5. Configurar variables de entorno
+## 5. Configurar variables de entorno
 ```bash
 cp .env.example .env
 ```
-# 6. Ejecutar migraciones
+## 6. Crear la base de datos
+Antes de migrar, crea la base de datos en PostgreSQL. Puedes hacerlo desde pgAdmin o desde la terminal:
+```bash
+psql -U postgres -c "CREATE DATABASE newcambridge;"
+```
+
+## 7. Ejecutar migraciones (primera vez)
 ```bash
 alembic upgrade head
 ```
-# 7. Iniciar servidor
+Esto creará todas las tablas automáticamente en la base de datos.  
+Al terminar verás algo como:
+
+```bash
+INFO  [alembic.runtime.migration] Running upgrade  -> xxxxxxxx, initial_schema
+```
+## 8. Iniciar servidor
 ```bash
 uvicorn app.main:app --reload --port 8000
 
@@ -73,6 +87,40 @@ http://localhost:8000
 # Documentación automática:
 http://localhost:8000/docs
 ```
+---
+
+# 🗄️ Migraciones con Alembic
+
+## Primera vez (instalación inicial)
+Si acabas de clonar el repositorio, simplemente corre:
+```bash
+alembic upgrade head
+```
+Alembic aplicará todas las migraciones existentes en orden y dejará la base de datos lista.
+
+## Cuando realizas un cambio en los modelos
+Cada vez que modifiques un `models.py` (nueva columna, nueva tabla, cambio de tipo), sigue este flujo:
+
+```bash
+# 1. Genera el archivo de migración automáticamente
+alembic revision --autogenerate -m "descripcion_del_cambio"
+
+# 2. Revisa el archivo generado en alembic/versions/
+#    Verifica que los cambios detectados sean correctos
+
+# 3. Aplica la migración
+alembic upgrade head
+```
+
+> ⚠️ Siempre revisa el archivo generado antes de aplicarlo. Alembic detecta la mayoría de cambios correctamente, pero es bueno confirmar.
+
+## Cuando haces git pull y hay migraciones nuevas
+Si un compañero generó una migración y la subió al repositorio, solo necesitas:
+```bash
+git pull
+alembic upgrade head
+```
+
 ---
 
 ## 📁 Estructura del Proyecto
