@@ -3,7 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import verificar_token
-from app.modules.auth.models import Usuario,SesionUsuario
+from app.modules.usuarios.models import Usuario
+from app.modules.auth.models import SesionUsuario
 from app.modules.auth import service
 from app.modules.auth.schemas import TokenResponse, UsuarioResponse, UsuarioCreate
 
@@ -55,13 +56,12 @@ def register(data: UsuarioCreate, db: Session = Depends(get_db)):
     usuario = service.crear_usuario(
         db,
         data.nombre,
-        data.correo,
         data.password,
         data.roles if hasattr(data, "roles") else None
     )
 
     if not usuario:
-        raise HTTPException(status_code=400, detail="El correo ya está registrado")
+        raise HTTPException(status_code=400, detail="El nombre ya está registrado")
 
     return usuario
 
