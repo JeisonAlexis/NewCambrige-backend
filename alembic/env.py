@@ -11,7 +11,9 @@ load_dotenv()
 from app.core.database import Base
 
 # ── Importa cada módulo que tenga models.py ──────────────────────────────
+import app.modules.usuarios.models      # noqa: F401
 import app.modules.auth.models          # noqa: F401
+import app.shared.models                # noqa: F401
 import app.modules.salon.models         # noqa: F401
 import app.modules.estudiantes.models   # noqa: F401
 import app.modules.banda.models         # noqa: F401
@@ -19,7 +21,7 @@ import app.modules.tesoreria.models     # noqa: F401
 import app.modules.uniformes.models     # noqa: F401
 import app.modules.rectoria.models      # noqa: F401
 import app.modules.secretaria.models    # noqa: F401
-import app.shared.models                # noqa: F401
+
 
 # Configuración de logging de alembic.ini
 config = context.config

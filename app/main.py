@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.modules.auth.router import router as auth_router
+import app.shared.models
+from app.routers import routers
 from fastapi.openapi.utils import get_openapi
 
 app = FastAPI(
@@ -42,7 +43,8 @@ app.openapi = custom_openapi"""
 def read_root():
     return {"mensaje": "Hola mundo con FastAPI 🚀"}
 
-app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+for router, prefix, tag in routers:
+    app.include_router(router, prefix=prefix, tags=[tag])
 
 app.add_middleware(
     CORSMiddleware,

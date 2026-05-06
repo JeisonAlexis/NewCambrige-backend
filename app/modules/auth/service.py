@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-from app.modules.auth.models import Usuario,SesionUsuario, RolUsuario, Rol
+from app.modules.usuarios.models import Usuario, RolUsuario, Rol
+from app.modules.auth.models import SesionUsuario
 from app.core.security import crear_token
 from datetime import datetime, timedelta
 from app.core.config import settings
@@ -10,20 +11,19 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def hash_contra(contra: str):
     return pwd_context.hash(contra)
 
-def autenticar_usuario(db: Session, correo: str, password: str):
-    usuario = db.query(Usuario).filter(Usuario.correo == correo).first()
+def autenticar_usuario(db: Session, nombre: str, password: str):
+    usuario = db.query(Usuario).filter(Usuario.nombre == nombre).first()
     if not usuario or not pwd_context.verify(password, usuario.contrasena):
         return None
     return usuario
 
-def crear_usuario(db: Session, nombre: str, correo: str, contra: str, roles: list = None):
-    existente = db.query(Usuario).filter(Usuario.correo == correo).first()
+def crear_usuario(db: Session, nombre: str, contra: str, roles: list = None):
+    existente = db.query(Usuario).filter(Usuario.nombre == nombre).first()
     if existente:
         return None
 
     nuevo = Usuario(
         nombre=nombre,
-        correo=correo,
         contrasena=hash_contra(contra)
     )
 
