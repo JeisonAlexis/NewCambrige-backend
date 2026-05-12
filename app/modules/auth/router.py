@@ -109,6 +109,7 @@ def check_session(
 
     ahora = datetime.utcnow()
 
+    #cambiar fuera de fase de producción
     limite = ahora - timedelta(minutes=1)
 
     # VERIFICAR INACTIVIDAD
